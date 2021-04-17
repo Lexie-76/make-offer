@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="/css/newteam.css">
+    <title>团队</title>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <i class="
+      el-icon-ice-cream-round"></i>
+        <!-- 有一个返回主页的超链接 -->
+        <el-link target="_blank"><a href="/makeoffer/index2">返回主页</a></el-link>
+    </div>
+    <el-container>
+        <el-header><h1>五月初九开营日，买房无忘看此问(笑)</h1></el-header>
+        <el-main>
+            <el-carousel indicator-position="outside" style="text-align: center;">
+                <el-carousel-item v-html="answer"v-for="answer in answers" :key="answer">
+
+                    {{answer}}
+                    <!-- <h1 style="text-align: center;">{{answer.q}}</h1>
+                    <p style="text-align: center;font-size: 20px; color: gray;">{{answer.a}}</p> -->
+                </el-carousel-item>
+            </el-carousel>
+
+        </el-main>
+
+    </el-container>
+    </el-container>
+
+    <!-- 先引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                answers:
+                    [
+                        "<h1>项目简介</h1><p style='color:grey; line-height:30px '>二十岁， 从“后浪”迈向“前浪”的年纪<br>二十岁，开始经受社会毒打的年纪<br>二十岁的“我”是社畜<br>三十岁 刚刚开始站稳脚跟的年纪<br>三十岁 努力成家立业、养家糊口的年纪<br>三十岁的“我”会变成房奴吗</p>",
+                        "<h1>技术实现</h1><p style='color:#666666; line-height:30px '>框架：Springboot<br>数据库：MySql、mongodb<br>语言：python、java<br类库：numpy<br>第三方组件：vue、d3.js</p>",
+                        "<h1>实现效果</h1><p style='color:grey; line-height:25px;text-align:left;padding-left:25%'>2014~2020 北京市软件行业平均月薪变化趋势折线图<br>2009~2018 北京市平均房价变化趋势直方图<br>2021~2030 北京市软件行业平均月薪变化趋势折线图<br>2021~2030 北京市平均房价变化趋势直方图<br>2021~2030商业贷款购房按照面积首付款变化趋势河流图<br>2021~2030商业贷款购房按照面积首付款月供占比河流图<br>2021~2030 公积金购房按照面积首付款月供占比河流图<br>2021~2030 公积金购房按照面积首付款变化趋势河流图</p>",
+                        "<h1>联系我们</h1><p style='color:#666666; line-height:30px '>mlx：南开大学2018级本科生<br>zly：南开大学2018级本科生</p>"
+                    ]
+
+            }
+
+
+        })
+    </script>
+</div>
+</body>
+
+</html>

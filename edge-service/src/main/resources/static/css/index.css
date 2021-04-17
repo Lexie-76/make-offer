@@ -1,0 +1,115 @@
+*{
+  padding:0;
+  margin: 0;
+}
+.el-row {
+  margin-bottom: 10px;
+}
+.el-row:last-child {
+  margin-bottom: 0;
+}
+
+h1,h2,h3,h4,h5,h6,p{
+  text-align: center;
+  vertical-align:middle;
+  display:inline-block;
+}
+body{
+  /* background-image: url(https://i0.wp.com/www.lowpolygonart.com/wp-content/uploads/2017/12/Sexy-Blue-100-Vertices.jpeg?fit=840%2C525); */
+  background-size: cover;
+}
+.el-header {
+  /* background-image: url(https://i0.wp.com/www.lowpolygonart.com/wp-content/uploads/2017/12/Sexy-Blue-100-Vertices.jpeg?fit=840%2C525); */
+  background-size: cover;
+  text-align: center;
+  min-height: 120px;
+  padding-top: 5px;
+  color: black;
+}
+
+.el-footer{
+  background-color: #333333;
+  text-align: center;
+  min-height: 200px;
+}
+
+.el-main {
+  text-align: center;
+  height: 800px;
+  padding:0px;
+
+
+}
+
+.headandmain{
+  background-image: url("https://i.niupic.com/images/2020/07/30/8toc.png") ;
+  background-size: 100%;
+  background-position:center ;
+}
+
+
+.el-dropdown {
+  vertical-align: top;
+}
+
+.el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+
+
+/* box这里放背景图片 */
+.box {
+
+  height: 100%;
+}
+
+.top
+{
+  padding-top: 10px;
+  text-align: center;
+  align-items: center;
+}
+
+.left {
+  padding-top: 100px;
+  float: left;
+  padding-left: 100px;
+  width: fit-content;
+}
+
+.right {
+  padding-top:100px;
+  padding-right: 100px;
+  float: right;
+  width: fit-content;
+}
+.el-button
+{
+  height: 100px;
+  width: 161px;
+  font-size:20px;
+  box-shadow: 8px 8px 16px 8px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  margin: 30px;
+}
+
+.item {
+  margin: 40px;
+}
+
+.left .el-tooltip__popper,
+.right .el-tooltip__popper {
+  padding: 8px 10px;
+}
+.grid-content{
+  margin:20px;
+  color: aliceblue;
+  font-size: 15px;
+  height: 100px;
+  text-align: left;
+}
+.grid-footer{
+  height:25px;
+  color: aliceblue;
+  font-size: 15px;
+  text-align: center;
+}

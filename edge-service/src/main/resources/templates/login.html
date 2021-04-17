@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="/css/test.css">
+    <title>登录</title>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <i class="
+      el-icon-ice-cream-round"></i>
+        <!-- 有一个返回主页的超链接 -->
+        <el-link target="_blank"><a href="/makeoffer/index2">返回主页</a></el-link>
+
+    </div>
+    <el-container>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+
+            <el-form-item label="用户名" prop="username">
+                <el-input style="width:200px" v-model="ruleForm.username"></el-input>
+            </el-form-item>
+
+            <el-form-item label="密码" prop="pass">
+                <el-input  style="width:200px" type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <el-button button @click="forgetpass(ruleForm)">忘记密码</el-button>
+            </el-form-item>
+        </el-form>
+    </el-container>
+
+    <!-- 先引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    ruleForm: {
+                        username: '',
+                        pass: '',
+
+                    },
+                    rules: {
+                        username: [
+                            { required: true, message: '至少输入用户名吧', trigger: 'blur' },],
+
+                        pass: [
+                            { required: true, message: '输入密码', trigger: 'blur' },
+                        ],
+                    }
+                };
+            },
+            methods: {
+                submitForm(formName) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            alert('submit!');
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                },
+                resetForm(formName) {
+                    this.$refs[formName].resetFields();
+                },
+                forgetpass(forname){
+                    alert("还没实现这个功能耶");
+                }
+            }
+
+        })
+    </script>
+</div>
+</body>
+</html>

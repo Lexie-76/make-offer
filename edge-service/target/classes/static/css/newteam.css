@@ -1,0 +1,44 @@
+.el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    min-height: 50px;
+}
+
+
+
+.el-main {
+    padding: 100px;
+    color: #333;
+    text-align: center;
+}
+
+body > .el-container {
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+.header{
+    height: 40px;
+    text-align: left;
+    background-color: cadetblue;
+    font-size: 30px;
+    color: gold;
+}
+
+.el-carousel__item h3 {
+    height: 400px;
+    color: #475669;
+    font-size: 15px;
+    opacity: 0.75;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-image: url(https://i2.wp.com/www.lowpolygonart.com/wp-content/uploads/2017/12/Telegram-100-Vertices.jpeg?fit=840%2C525);
+    background-size: 100%;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-image: url(https://i2.wp.com/www.lowpolygonart.com/wp-content/uploads/2017/12/Jonquil-100-Vertices.jpeg?fit=840%2C525);
+    background-size: 100%;
+}

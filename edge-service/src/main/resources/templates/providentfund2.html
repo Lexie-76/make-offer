@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link rel="stylesheet" href="/css/newteam.css">
+</head>
+<body style="text-align: center">
+<div class="header">
+    <i class="
+      el-icon-ice-cream-round"></i>
+    <!-- 有一个返回主页的超链接 -->
+    <el-link target="_blank"><a href = "/makeoffer/index2">返回主页</a></el-link>
+</div>
+<div><h4>2021-2030公积金购房月供占比河流图</h4></div>
+<div class = "pic2">
+    <svg width="1650" height="920" id="mainsvg" class="svgs" style="background-color: #ffffff;"></svg>
+    <script>
+        // get main SVG and its attributes & setting hyper-parameters;
+        const svg = d3.select('#mainsvg');
+        const width = +svg.attr('width');
+        const height = +svg.attr('height');
+        const margin = {top: 100, right: 120, bottom: 100, left: 120};
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
+        const xValue = (datum) => { return dates.indexOf(datum['年份']); };
+        const yValue = (datum) => {return datum['月供比例']};
+        let low_max = 10;
+        let up_max = 10;
+        let limit_up_max = 5;
+        let xScale, yScale, nyScale;
+        let maxX, maxY;
+        let dates;
+        let totalduration = 6000;
+        const xAxisLabel = ' ';
+        const yAxisLabel = '月供比例';
+        let province_color = {
+            "50": "#FFDE1A",
+            "70": "#C16B0D",
+            "90": "#385177",
+            "110": "#4B8E6F",
+            "130": "#ef638e",
+            "150": "#91CA8C",
+        }
+
+        const renderinit = function(data, seq){
+            // Linear Scale: Data Space -> Screen Space;
+            xScale = d3.scaleLinear()
+                .domain(d3.extent(data, xValue))
+                .range([0, innerWidth]);
+
+            // Introducing y-Scale;
+            yScale = d3.scaleLinear()
+                .domain([up_max, 0, -low_max]) // "extent" is equivalent to [d3.min(data, xValue), d3.max(data, xValue)];
+                .range([innerHeight, innerHeight / 2, 0])
+                .nice();
+
+            nyScale = d3.scaleLinear()
+                .domain([-up_max, 0, low_max])
+                .range([innerHeight, innerHeight / 2, 0])
+                .nice();
+
+            // generate maxX and maxY;
+            maxX = xScale(d3.max(data, xValue));
+            maxY = yScale(d3.max(data, yValue));
+
+            // The reason of using group is that nothing is rendered outside svg, so margin of svg is always blank while margin of group is rendered inside svg;
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                .attr('id', 'maingroup');
+
+            let formatter = d3.format("0")
+            const yAxis = d3.axisLeft(yScale)
+                .tickSize(-innerWidth)
+                .tickFormat(function (d) {
+                    if (d === 0) return 0; // No label for '0'
+                    else if (d < 0) d = -d; // No nagative labels
+                    return formatter(d);
+                })
+                //.tickFormat(d3.format('.2s'))
+                .tickPadding(10); // .tickPadding is used to prevend intersection of ticks;
+            const xAxis = d3.axisBottom(xScale)
+                //.tickFormat(d3.format('.2s'))
+                .tickSize(-innerHeight)
+                .tickPadding(10)
+                .ticks(10);
+
+            let yAxisGroup = g.append('g').call(yAxis).attr('id', 'yaxis')
+            d3.selectAll('#yaxis .tick text').attr('transform', `translate(${0}, ${-3})`);
+            yAxisGroup.append('text')
+                .attr('transform', `rotate(-90)`)
+                .attr('x', -innerHeight / 2)
+                .attr('y', -80)
+                .attr('fill', 'white')
+                .text(yAxisLabel)
+                .attr('text-anchor', 'middle') // Make label at the middle of axis.
+            yAxisGroup.selectAll('.domain').remove(); // we can select multiple tags using comma to seperate them and we can use space to signify nesting;
+
+            let xAxisGroup = g.append('g').call(xAxis).attr('transform', `translate(${0}, ${innerHeight})`).attr('id', 'xaxis');
+            d3.selectAll('#xaxis .tick text').attr('transform', `translate(${0}, ${5})`);
+            xAxisGroup.append('text')
+                .attr('y', 60)
+                .attr('x', innerWidth / 2)
+                .attr('fill', 'white')
+                .text(xAxisLabel);
+            xAxisGroup.selectAll('.domain').remove();
+
+            // console.log(document.getElementById('xaxis'));
+            myticks = ["2021", "2022", "2023", "2024", "2025", "2026",
+                "2027", "2028", "2029", "2030"]
+            for(let tid = 0; tid < myticks.length; tid++){
+                document.getElementById('xaxis').getElementsByClassName('tick')[tid].getElementsByTagName('text')[0].textContent = myticks[tid];
+            }
+
+            let province_name = ["50", "70", "90", "110", "130", "150"]
+            // draw legend
+            let legend = svg.selectAll(".legend")
+                .data(province_name)
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(" + (innerWidth + 130) + "," + (i * 20 + 140) + ")"; });
+
+            // draw legend colored rectangles
+            legend.append("rect")
+                .data(province_name)
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 30)
+                .attr("height", 15)
+                .style("fill", function (d,i) {
+                    return province_color[d]});
+
+            // draw legend text
+            legend.append("text")
+                .data(province_name)
+                .attr("class", "legend_text")
+                .attr("x", 40)
+                .attr("y", 9)
+                .attr("dy", ".2em")
+                .attr("fill", '#333333')
+                .style("text-anchor", "start")
+                .text(d => d);
+        };
+
+        const render = function(data, keys, area){
+            let g = d3.select('#maingroup');
+            let layers = d3.stack()
+                .keys(keys)
+                .offset(d3.stackOffsetNone)
+                //.order(d3.stackOrderDescending)
+                .order(d3.stackOrderNone)
+                (data);
+
+            const clipedrect = g.append("clipPath") // Warning: Never append new rect after groups or it shall conflict with barcharts;
+                .attr("id", "rectClip")
+                .append("rect")
+                .attr('class', 'rect-clip')
+                .attr("width", 0)
+                .attr("height", innerHeight);
+
+            g.selectAll("path")
+                .data(layers)
+                .join("path") // use join to avoid split according to "enter" and "update";
+                .attr("opacity",0.9)
+                //.transition().duration(3000)
+                .attr("d", function(d,i) {
+                    console.log(d);
+                    return area(d);
+                })
+                .attr("clip-path", "url(#rectClip)")
+                // fill attrbute requires designers to assign colors for each province;
+                .attr("fill", function (d,i) {
+                    console.log(d["key"]);
+                    return province_color[d["key"]]; });
+
+            clipedrect.transition().ease(d3.easeLinear).duration(totalduration).attr("width", innerWidth);
+
+            const path = g.selectAll("path")
+                .data(layers)
+                .join("path") // use join to avoid split according to "enter" and "update";
+                .attr("opacity",0.9)
+                .transition().duration(3000)
+                .attr("d", area)
+                // fill attrbute requires designers to assign colors for each province;
+                .attr("fill", function (d,i) { return province_color[d["key"]]; });
+
+
+        };
+        const seqgen = function(data){
+            // re-arrange the data sequentially;
+            let prestack = [];
+            dates.forEach(datum => {
+                prestack.push({'年份': datum});
+            });
+            data.forEach(datum => {
+                //sequential[alldates.indexOf(datum['日期'])].push(datum);
+                prestack[dates.indexOf(datum['年份'])][datum['面积']] = yValue(datum);
+            });
+            return prestack
+        }
+
+        d3.csv('/data/account2.csv').then(function(data){
+            data.forEach(datum => {
+                // pre-process the data;
+                datum['月供比例'] = +(datum['月供比例']);
+            });
+            console.log(data);
+
+            // remove duplicated items;
+            alldates = Array.from(new Set(data.map( datum => datum['年份'])));
+            console.log(alldates);
+
+            // make sure dates are listed according to real time order;
+            alldates = alldates.sort(function(a,b){
+                // turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(b.date) - new Date(a.date);
+            });
+            dates = alldates;
+
+            let sequential = [];
+            alldates.forEach(datum => {
+                sequential.push([]);
+            });
+            data.forEach(datum => {
+                sequential[alldates.indexOf(datum['年份'])].push(datum);
+            });
+
+            // smooth new infec;
+            let t = 0;
+            let originy = (datum) => {return datum['月供比例']};
+            for(; t < sequential.length; t++){
+                sequential[t].forEach(datum => {
+                    if(t == 0){
+                        datum.newinfec_s = originy(datum);
+                    }else if(t == 1){
+                        datum.newinfec_s = (
+                            originy(datum) +
+                            originy(sequential[t-1].find(x => x['面积'] === datum['面积']))
+                        ) / 2.0;
+                    }else{
+                        datum.newinfec_s = (
+                            originy(datum) +
+                            originy(sequential[t-1].find(x => x['面积'] === datum['面积'])) +
+                            originy(sequential[t-2].find(x => x['面积'] === datum['面积']))
+                        ) / 3.0;
+                    }
+                })
+            }
+
+            // stack data;
+            let prestack = seqgen(data);
+            let keys = Array.from(new Set(data.map( datum => datum['面积'])));
+
+            // generate low_max and up_max for Y-scale;
+            up_max = d3.max(sequential, seq => {
+                // console.log(seq);
+                result = 0;
+                seq.forEach(s => {
+                    result += yValue(s);
+                })
+                return result;
+            })
+            low_max = d3.max(sequential, seq => {
+                if(limit_up_max !== -1){
+                    return limit_up_max;
+                }
+                result = 0;
+                seq.forEach(s => {
+                    result += yValue(s);
+
+                })
+                return result;
+            })
+
+            // initialize the chart;
+            renderinit(data);
+
+            const area = d3.area()
+                .curve(d3.curveCardinal.tension(0.3)) // default is d3.curveLinear, d3.curveBundle.beta(1.0)
+                .x(d => xScale(xValue(d.data)))
+                .y0(d => yScale(d[0]))
+                .y1(d => yScale(d[1]));
+
+
+            // set the animation interval;
+            render(prestack, keys, area);
+        });
+    </script>
+</div>
+</body>
+</html>
